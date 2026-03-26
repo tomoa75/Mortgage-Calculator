@@ -1,9 +1,14 @@
 import { useState } from "react";
 import InputGroup from "./InputGroup";
-
+import emptyIllustration from "./assets/images/illustration-empty.svg";
 import "./App.css";
 
 function App() {
+  const formatter = new Intl.NumberFormat("en-GB", {
+    style: "currency",
+    currency: "GBP",
+  });
+
   const initialState = {
     amount: "",
     term: "",
@@ -40,97 +45,114 @@ function App() {
     const total = type === "repayment" ? monthly * n : monthly * n;
 
     setResults({
-      monthly: monthly.toFixed(2),
-      total: total.toFixed(2),
+      monthly: monthly,
+      total: total,
     });
   };
 
   return (
-    <div className="container">
-      <h2>Mortgage Calculator</h2>
-      <button
-        type="button"
-        classname="Clr-btn"
-        onClick={() => {
-          setFormData(initialState);
-          setResults(null);
-        }}
-      >
-        Clear all
-      </button>
-      <form>
-        {/* Pozivamo šablonu i šaljemo props */}
+    <main className="calculator-wrapper">
+      <div className="form-header">
+        <h3>Mortgage Calculator</h3>
+        <a
+          href="#"
+          className="clear-link"
+          onClick={(e) => {
+            e.preventDefault(); // Sprječava skok na vrh stranice (#)
+            setFormData(initialState);
+            setResults(null);
+          }}
+        >
+          Clear All
+        </a>
+      </div>
+      <section className="calculator-form">
+        <form>
+          {/* Pozivamo šablonu i šaljemo props */}
 
-        <InputGroup
-          label="Mortgage Amount"
-          name="amount"
-          value={formData.amount}
-          onChange={handleChange}
-          prefix="£"
-        />
+          <InputGroup
+            label="Mortgage Amount"
+            name="amount"
+            value={formData.amount}
+            onChange={handleChange}
+            prefix="£"
+          />
 
-        <InputGroup
-          label="Mortgage Term "
-          name="term"
-          value={formData.term}
-          onChange={handleChange}
-          suffix="years"
-        />
+          <InputGroup
+            label="Mortgage Term "
+            name="term"
+            value={formData.term}
+            onChange={handleChange}
+            suffix="years"
+          />
 
-        <InputGroup
-          label="Interest Rate (%)"
-          name="rate"
-          value={formData.rate}
-          onChange={handleChange}
-          suffix="%"
-        />
-        <div className="radio-section">
-          <p>Mortgage Type</p>
+          <InputGroup
+            label="Interest Rate (%)"
+            name="rate"
+            value={formData.rate}
+            onChange={handleChange}
+            suffix="%"
+          />
+          <div className="radio-section">
+            <p>Mortgage Type</p>
 
-          <label className="radio-label">
-            <input
-              type="radio"
-              name="type"
-              value="repayment"
-              checked={formData.type === "repayment"} // Ako je u stanju 'repayment', kvačica je tu
-              onChange={handleChange}
-            />
-            Repayment
-          </label>
+            <label className="radio-label">
+              <input
+                type="radio"
+                name="type"
+                value="repayment"
+                checked={formData.type === "repayment"} // Ako je u stanju 'repayment', kvačica je tu
+                onChange={handleChange}
+              />
+              Repayment
+            </label>
 
-          <label className="radio-label">
-            <input
-              type="radio"
-              name="type"
-              value="interest-only"
-              checked={formData.type === "interest-only"} // Ako je u stanju 'interest-only', kvačica je tu
-              onChange={handleChange}
-            />
-            Interest Only
-          </label>
-        </div>
+            <label className="radio-label">
+              <input
+                type="radio"
+                name="type"
+                value="interest-only"
+                checked={formData.type === "interest-only"} // Ako je u stanju 'interest-only', kvačica je tu
+                onChange={handleChange}
+              />
+              Interest Only
+            </label>
+          </div>
 
-        <button type="button" onClick={calculateResults}>
-          Calculate Repayments
-        </button>
-      </form>
-      <section>
+          <button type="button" onClick={calculateResults}>
+            Calculate Repayments
+          </button>
+        </form>
+      </section>
+      <section className="calculator-results">
         {/* Prikaz rezultata */}
         {results ? (
-          <div>
-            <h3>Vaš izračun:</h3>
+          <div className="results-after">
+            <h3>Your results</h3>
             <p>
-              Mjesečna rata: <strong>£{results.monthly}</strong>
+              Your results are shown below based on the information you
+              provided.To adjust the results,edit the form and click "calculate
+              repayments again."
             </p>
-            <p>
-              Ukupno za vratiti: <strong>£{results.total}</strong>
-            </p>
+            <div>
+              <p>Your monthly repayments</p>
+              <strong>{formatter.format(results.monthly)}</strong>
+              <p>Total you 'll repay over the term</p>
+              <strong>{formatter.format(results.total)}</strong>
+            </div>
           </div>
         ) : (
-          <p>Unesite podatke i kliknite na gumb za izračun.</p>
+          <div className="results-before">
+            <img src={emptyIllustration} alt="empty-illustration" />
+            <h3>Results shown here</h3>
+            <p>
+              Complete the form and click "calculate repayments" to see what
+              your monthly repayments would be.
+            </p>
+          </div>
         )}
       </section>
-    </div>
+    </main>
   );
 }
 
