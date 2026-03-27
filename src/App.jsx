@@ -1,6 +1,7 @@
 import { useState } from "react";
 import InputGroup from "./InputGroup";
 import emptyIllustration from "./assets/images/illustration-empty.svg";
+import calculator from "./assets/images/icon-calculator.svg";
 import "./App.css";
 
 function App() {
@@ -52,25 +53,27 @@ function App() {
 
   return (
     <main className="calculator-wrapper">
-      <div className="form-header">
-        <h3>Mortgage Calculator</h3>
-        <a
-          href="#"
-          className="clear-link"
-          onClick={(e) => {
-            e.preventDefault(); // Sprječava skok na vrh stranice (#)
-            setFormData(initialState);
-            setResults(null);
-          }}
-        >
-          Clear All
-        </a>
-      </div>
       <section className="calculator-form">
+        <div className="form-header">
+          <h3>Mortgage Calculator</h3>
+          <a
+            href="#"
+            className="clear-link"
+            onClick={(e) => {
+              e.preventDefault(); // Sprječava skok na vrh stranice (#)
+              setFormData(initialState);
+              setResults(null);
+            }}
+          >
+            Clear All
+          </a>
+        </div>
+
         <form>
           {/* Pozivamo šablonu i šaljemo props */}
 
           <InputGroup
+            className="full-width" // <-- Ova ide preko cijele širine
             label="Mortgage Amount"
             name="amount"
             value={formData.amount}
@@ -93,9 +96,9 @@ function App() {
             onChange={handleChange}
             suffix="%"
           />
+
           <div className="radio-section">
             <p>Mortgage Type</p>
-
             <label className="radio-label">
               <input
                 type="radio"
@@ -120,6 +123,7 @@ function App() {
           </div>
 
           <button type="button" onClick={calculateResults}>
+            <img src={calculator} alt="calculator" />
             Calculate Repayments
           </button>
         </form>
@@ -134,11 +138,12 @@ function App() {
               provided.To adjust the results,edit the form and click "calculate
               repayments again."
             </p>
-            <div>
+            <div className="results-canvas">
               <p>Your monthly repayments</p>
-              <strong>{formatter.format(results.monthly)}</strong>
+              <h1>{formatter.format(results.monthly)}</h1>
+              <hr />
               <p>Total you 'll repay over the term</p>
-              <strong>{formatter.format(results.total)}</strong>
+              <h3>{formatter.format(results.total)}</h3>
             </div>
           </div>
         ) : (

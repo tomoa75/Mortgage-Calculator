@@ -6,9 +6,10 @@ export default function InputGroup({
   onChange,
   prefix,
   suffix,
+  className,
 }) {
   return (
-    <div className="input-field">
+    <div className={`input-field ${className || ""}`}>
       <label>{label}</label>
       <div className="input-wrapper">
         {/* Ako si poslao prefix (npr. £), on se crta ovdje */}

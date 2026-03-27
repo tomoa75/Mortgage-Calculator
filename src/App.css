@@ -1,6 +1,7 @@
 :root {
   /* Primarne boje */
   --color-lime: hsl(61, 70%, 52%);
+  --color-lime-raw: 61, 70%, 52%;
   --color-red: hsl(4, 69%, 50%);
 
   /* Neutralne boje (Slate) */
@@ -59,24 +60,197 @@ body {
   background-color: var(--color-slate-900);
   color: var(--color-slate-300);
   border-bottom-left-radius: 80px;
+  display: flex;
+}
+.calculator-results h1 {
+  font-size: 56px;
+  line-height: 125%;
+  color: var(--color-lime);
+  margin: 0;
+}
+.calculator-results h3 {
+  font-size: 24px;
+  line-height: 125%;
+  color: var(--color-white);
+  font-weight: 700;
+
+  margin-top: 6px;
 }
 
+.calculator-results p {
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0;
+}
+.calculator-results hr {
+  background-color: var(--color-slate-300);
+  height: 1px;
+  border: none;
+  margin: 24px 0;
+}
 .calculator-form {
+  text-align: left;
+  color: var(--color-slate-700);
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0;
+}
+
+.calculator-form form {
   display: grid;
-  background-color: var(--color-lime);
+
   grid-template-columns: 1fr 1fr; /* Definiramo dva jednaka stupca */
   gap: 24px; /* Razmak između svih elemenata (vodoravno i okomito) */
 }
+/* Klasa koja rasteže element na oba stupca */
+.full-width {
+  grid-column: span 2;
+}
 
 .form-header {
-  display: flex;
   justify-content: space-between; /* Razmakni ih na suprotne krajeve*/
-  align-items: center; /* Poravnaj ih po sredini (vertikalno) */
+  display: flex;
   margin-bottom: 40px; /* Razmak do prvog inputa */
+  align-items: center;
+  width: 100%;
 }
 
 .form-header h3 {
+  margin: 0; /* Briše defaultne margine koje bi mogle poremetiti ravninu */
   font-size: 24px;
+  line-height: 125%;
   color: var(--color-slate-900);
+}
+
+.clear-link {
+  color: var(--color-slate-700);
+  font-size: 16px;
+
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.clear-link:hover {
+  color: var(--color-slate-900);
+}
+/* Glavni div unutar InputGroup komponente */
+.input-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%; /* Ovo je ključno! */
+}
+
+/* Okvir koji drži prefix/suffix i sam input */
+.input-wrapper {
+  display: flex;
+  width: 100%; /* Mora se rastegnuti kroz cijeli .input-field */
+  border: 1px solid var(--color-slate-300);
+  border-radius: 4px;
+  overflow: hidden;
+  align-items: stretch;
+}
+.prefix,
+.suffix {
+  background-color: var(--color-slate-100);
+  color: var(--color-slate-700);
   font-weight: 700;
+  padding: 0 16px; /* Razmak oko teksta (£ ili %) */
+
+  /* Centriranje teksta unutar sivog bloka */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/*skrivanje strelica unutar inputa */
+/* Za Chrome, Safari, Edge i Operu */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Sam <input> element unutar wrappera */
+.input-wrapper input {
+  flex: 1; /* Ovo tjera input da "pojede" sav preostali prostor pored £ ili % */
+  width: 100%;
+  font-weight: 700;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  padding: 12px;
+  color: var(--color-slate-900);
+}
+/* Mortgage Amount i Radio sekcija trebaju cijelu širinu */
+.full-width,
+.radio-section,
+.calculate-btn {
+  grid-column: span 2;
+}
+
+/* Da bi radio gumbi bili jedan ispod drugog, a ne jedan pored drugog */
+.radio-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+input[type="radio"] {
+  width: 24px;
+  height: 24px;
+  accent-color: var(--color-lime);
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid var(--color-slate-500);
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--color-slate-900);
+  font-size: 18px;
+  line-height: 125%;
+  font-weight: 900;
+  gap: 12px;
+}
+.radio-label:hover {
+  border-color: var(--color-lime);
+}
+.calculator-form button {
+  grid-column: span 2; /* Zauzima oba stupca */
+  background-color: var(--color-lime);
+  color: var(--color-slate-900);
+  border: none;
+  padding: 16px 40px;
+  border-radius: 40px; /* Jako zaobljeni rubovi */
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: background-color 0.2s ease;
+  width: fit-content; /* Gumb neće biti rastegnut ako ne želiš, ili stavi 100% za mobilne */
+}
+
+.calculator-form button:hover {
+  background-color: hsla(var(--color-lime-raw), 0.5);
+}
+
+.results-before {
+  margin: auto;
+}
+
+.results-after {
+  text-align: left;
+}
+
+.results-canvas {
+  background-color: black;
+  border-radius: 8px;
+  margin-top: 40px;
+  padding: 32px;
+  box-shadow: 0 -4px 0 0 var(--color-lime); /* x-offset y-offset blur spread color */
 }
