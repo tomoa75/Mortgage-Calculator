@@ -44,7 +44,7 @@ body {
   width: 90%; /* Na manjim ekranima zauzmi 90% širine da imaš "lufta" sa strana */
   margin: auto;
   display: flex;
-  flex-wrap: wrap;
+
   max-height: 606px;
   border-radius: 24px;
   overflow: hidden;
@@ -80,7 +80,7 @@ body {
 .calculator-results p {
   font-size: 16px;
   line-height: 150%;
-  letter-spacing: 0;
+  letter-spacing: -0.5px;
 }
 .calculator-results hr {
   background-color: var(--color-slate-300);
@@ -253,4 +253,53 @@ input[type="radio"] {
   margin-top: 40px;
   padding: 32px;
   box-shadow: 0 -4px 0 0 var(--color-lime); /* x-offset y-offset blur spread color */
+}
+.input-field.error .input-wrapper {
+  border: 1px solid red;
+}
+.input-field.error .suffix,
+.input-field.error .prefix {
+  background-color: red;
+  color: var(--color-white);
+}
+.errormessage {
+  color: red;
+  font-size: 14px;
+  line-height: 150%;
+}
+@media (max-width: 1200px) {
+  .calculator-wrapper {
+    flex-direction: column;
+    max-height: fit-content;
+  }
+  .calculator-results {
+    border-radius: 0 0 24px;
+  }
+}
+@media (max-width: 768px) {
+  .calculator-wrapper {
+    border-radius: 0px;
+    padding: 0;
+    max-width: 100%;
+    width: 100%;
+  }
+  .calculator-form {
+    padding: 24px;
+  }
+  .calculator-form button {
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .calculator-results {
+    border-radius: 0px;
+  }
+  .form-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .calculator-form form {
+    display: flex;
+    flex-direction: column;
+  }
 }

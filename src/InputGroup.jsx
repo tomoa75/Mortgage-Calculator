@@ -1,3 +1,5 @@
+import ErrorMessage from "./ErrorMessage";
+
 // Ovo je  "šablona"
 export default function InputGroup({
   label,
@@ -7,9 +9,10 @@ export default function InputGroup({
   prefix,
   suffix,
   className,
+  error,
 }) {
   return (
-    <div className={`input-field ${className || ""}`}>
+    <div className={`input-field ${className || ""} ${error && "error"}`}>
       <label>{label}</label>
       <div className="input-wrapper">
         {/* Ako si poslao prefix (npr. £), on se crta ovdje */}
@@ -24,6 +27,7 @@ export default function InputGroup({
         {/* Ako si poslao suffix (npr. %), on se crta ovdje */}
         {suffix && <span className="suffix">{suffix}</span>}
       </div>
+      {error && <ErrorMessage />}
     </div>
   );
 }

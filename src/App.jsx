@@ -1,5 +1,6 @@
 import { useState } from "react";
 import InputGroup from "./InputGroup";
+import ErrorMessage from "./ErrorMessage";
 import emptyIllustration from "./assets/images/illustration-empty.svg";
 import calculator from "./assets/images/icon-calculator.svg";
 import "./App.css";
@@ -14,11 +15,22 @@ function App() {
     amount: "",
     term: "",
     rate: "",
-    type: "repayment",
+    type: "",
   };
   const [results, setResults] = useState(null);
 
   const [formData, setFormData] = useState(initialState);
+
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    return {
+      amount: !formData.amount || parseFloat(formData.amount) <= 0,
+      term: !formData.term || parseFloat(formData.term) <= 0,
+      rate: !formData.rate || parseFloat(formData.rate) <= 0,
+      type: !formData.type, //  true ako ništa nije odabrano
+    };
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,16 +38,25 @@ function App() {
       ...prev, // Kopiraj stare podatke
       [name]: value, // Prebriši samo ono što se promijenilo
     }));
+    setErrors((prev) => ({
+      ...prev,
+      [name]: false, // resetira grešku za taj input ili radio
+    }));
   };
 
-  const calculateResults = () => {
+  const calculateResults = (e) => {
+    e.preventDefault();
     const { amount, term, rate, type } = formData;
 
     const P = parseFloat(amount);
     const r = parseFloat(rate) / 100 / 12; // Mjesečna kamata
     const n = parseFloat(term) * 12; // Ukupno mjeseci
 
-    if (!P || !r || !n) return;
+    const validationFlags = validate();
+    setErrors(validationFlags);
+
+    // Ako barem jedno polje ima true → stop
+    if (Object.values(validationFlags).some((flag) => flag)) return;
 
     // Izračunaj mjesečnu ratu (Repayment formula ili Interest Only)
     const monthly =
@@ -63,13 +84,14 @@ function App() {
               e.preventDefault(); // Sprječava skok na vrh stranice (#)
               setFormData(initialState);
               setResults(null);
+              setErrors({});
             }}
           >
             Clear All
           </a>
         </div>
 
-        <form>
+        <form onSubmit={calculateResults}>
           {/* Pozivamo šablonu i šaljemo props */}
 
           <InputGroup
@@ -79,6 +101,7 @@ function App() {
             value={formData.amount}
             onChange={handleChange}
             prefix="£"
+            error={errors.amount}
           />
 
           <InputGroup
@@ -87,6 +110,7 @@ function App() {
             value={formData.term}
             onChange={handleChange}
             suffix="years"
+            error={errors.term}
           />
 
           <InputGroup
@@ -95,6 +119,7 @@ function App() {
             value={formData.rate}
             onChange={handleChange}
             suffix="%"
+            error={errors.rate}
           />
 
           <div className="radio-section">
@@ -120,9 +145,10 @@ function App() {
               />
               Interest Only
             </label>
+            {errors.type && <ErrorMessage />}
           </div>
 
-          <button type="button" onClick={calculateResults}>
+          <button className="calc-btn" type="submit">
             <img src={calculator} alt="calculator" />
             Calculate Repayments
           </button>
