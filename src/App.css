@@ -100,7 +100,7 @@ body {
   display: grid;
 
   grid-template-columns: 1fr 1fr; /* Definiramo dva jednaka stupca */
-  gap: 24px; /* Razmak između svih elemenata (vodoravno i okomito) */
+  gap: 10px; /* Razmak između svih elemenata (vodoravno i okomito) */
 }
 /* Klasa koja rasteže element na oba stupca */
 .full-width {
@@ -184,7 +184,7 @@ input::-webkit-inner-spin-button {
 /* Mortgage Amount i Radio sekcija trebaju cijelu širinu */
 .full-width,
 .radio-section,
-.calculate-btn {
+.calc-btn {
   grid-column: span 2;
 }
 
@@ -266,6 +266,10 @@ input[type="radio"] {
   color: red;
   font-size: 14px;
   line-height: 150%;
+  opacity: 0;
+}
+.visible {
+  opacity: 1;
 }
 @media (max-width: 1200px) {
   .calculator-wrapper {
