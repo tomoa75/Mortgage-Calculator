@@ -27,7 +27,7 @@ export default function InputGroup({
         {/* Ako si poslao suffix (npr. %), on se crta ovdje */}
         {suffix && <span className="suffix">{suffix}</span>}
       </div>
-      {error && <ErrorMessage />}
+      <ErrorMessage className={`errormessage ${error ? "visible" : ""}`} />
     </div>
   );
 }

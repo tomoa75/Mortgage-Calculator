@@ -30,7 +30,7 @@ function App() {
       rate: !formData.rate || parseFloat(formData.rate) <= 0,
       type: !formData.type, //  true ako ništa nije odabrano
     };
-  };
+  }; //objekt koji vraca true za svaki input koji nije validan
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,7 +53,7 @@ function App() {
     const n = parseFloat(term) * 12; // Ukupno mjeseci
 
     const validationFlags = validate();
-    setErrors(validationFlags);
+    setErrors(validationFlags); // Postavi greške u stanje
 
     // Ako barem jedno polje ima true → stop
     if (Object.values(validationFlags).some((flag) => flag)) return;
@@ -145,7 +145,9 @@ function App() {
               />
               Interest Only
             </label>
-            {errors.type && <ErrorMessage />}
+            <ErrorMessage
+              className={`errormessage ${errors.type ? "visible" : ""}`}
+            />
           </div>
 
           <button className="calc-btn" type="submit">
